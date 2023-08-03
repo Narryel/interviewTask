@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+}
+
+group = 'local.interviews'
+version = '0.0.1'
+sourceCompatibility = '17'
+
+apply plugin: 'java'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+ 
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	implementation('org.slf4j:slf4j-api:2.0.7')
+	implementation('ch.qos.logback:logback-classic:1.4.7')
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+	annotationProcessor 'org.projectlombok:lombok:1.18.26'
+	
+	testCompileOnly 'org.projectlombok:lombok:1.18.26'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+	testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+	testImplementation('org.mockito:mockito-core:5.3.1')
+	testImplementation('com.google.guava:guava:32.1.1-jre')
+}
+
+test {
+	useJUnitPlatform()
+}
+
+// https://youtrack.jetbrains.com/issue/IDEA-284048/Cannot-navigate-to-Gradle-classes-when-using-Task-Configuration-Avoidance
+//tasks.named('test') {
+//    useJUnitPlatform()
+//}
+
+test {
+	systemProperty "java.util.concurrent.ForkJoinPool.common.parallelism", 20
+	jvmArgs '-Djdk.attach.allowAttachSelf=true'
+}
